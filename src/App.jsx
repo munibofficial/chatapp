@@ -1,11 +1,10 @@
 import Registration from "./components/Registration";
-import Header from "./components/Header";
 
 export default function App() {
   return (
     <>
       <header className="header">
-        <Header/>
+        <p>Header</p>
       </header>
       <main className="main-content">
         <Registration/>
