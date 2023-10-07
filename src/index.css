@@ -1,0 +1,113 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+body {
+  /* This width and height might need adjustments based on your design */
+  width: 80%; /* You can set a max-width too, if needed */
+  height: 80%;
+  margin: 0;
+  padding: 0;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+}
+
+body, html {
+  height: 100%;
+  display: grid;
+  place-items: center; /* Reset padding to ensure the header fits perfectly */
+  display: flex;
+  justify-content: center;
+}
+
+.header {
+  grid-row: 1 / 2;
+  background-color: #213547;
+  width: 100%; /* Make sure the header spans the full width */
+  position: absolute; /* This allows us to set it at the top without any space */
+  top: 0; /* Set it to the top of the viewport */
+  left: 0; /* Aligns the header to the left, ensuring it spans across */
+  /* Add additional styles for the header if needed */
+}
+
+.main-content {
+  grid-row: 2 / 3;
+  display: flex;          /* To center content in both axes */
+  align-items: center;    /* Center content vertically */
+  justify-content: center;/* Center content horizontally */
+  /* Add additional styles for the main content if needed */
+}
+
+.footer {
+  grid-row: 3 / 4;
+  /* Add additional styles for the footer if needed */
+}
+
