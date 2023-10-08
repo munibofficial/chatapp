@@ -74,7 +74,6 @@ body {
   height: 80%;
   margin: 0;
   padding: 0;
-  background-color: #f9f9f9;
 
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -92,7 +91,7 @@ body, html {
 .header {
   grid-row: 1 / 2;
   background-color: #213547;
-  width: 100%; /* Make sure the header spans the full width */
+  width: 100%; /* Make sure the header spans the ful l width */
   position: absolute; /* This allows us to set it at the top without any space */
   top: 0; /* Set it to the top of the viewport */
   left: 0; /* Aligns the header to the left, ensuring it spans across */
