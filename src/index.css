@@ -74,6 +74,7 @@ body {
   height: 80%;
   margin: 0;
   padding: 0;
+  background-color: #f9f9f9;
 
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -110,4 +111,3 @@ body, html {
   grid-row: 3 / 4;
   /* Add additional styles for the footer if needed */
 }
-
