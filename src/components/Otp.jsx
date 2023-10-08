@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function Otp() {
   const [otp, setOtp] = useState({ digit1: '', digit2: '', digit3: '', digit4: '' });
   const [isTimerActive, setIsTimerActive] = useState(false);
-  const [counter, setCounter] = useState(40);  // Initialize the counter to 40 seconds
+  const [counter, setCounter] = useState(40);
+  const [isVerified, setIsVerified] = useState(false);
 
   const refs = {
     digit1: useRef(null),
@@ -15,20 +20,25 @@ function Otp() {
 
   useEffect(() => {
     let timer;
-
-    // If the counter is greater than 0, start decrementing it every second
     if (counter > 0) {
       timer = setInterval(() => {
         setCounter(prevCounter => prevCounter - 1);
       }, 1000);
     } else {
-      setIsTimerActive(true);  // Enable the button when the counter reaches 0
-      clearInterval(timer);   // Clear the interval to stop decrementing
+      setIsTimerActive(true);
+      clearInterval(timer);
     }
 
-    // Cleanup function to clear the interval when the component unmounts or when the counter changes
     return () => clearInterval(timer);
   }, [counter]);
+
+  useEffect(() => {
+    if (Object.values(otp).join("").length === 4) {
+      // Here, you would typically make an API call to verify the OTP.
+      // For the sake of this example, we'll simulate a successful verification.
+      setIsVerified(true);
+    }
+  }, [otp]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -48,11 +58,28 @@ function Otp() {
     height: '40px',
     marginRight: '10px',
     textAlign: 'center',
+    borderRadius: '5px',
+    border: '2px solid #ddd',
+    fontSize: '18px',
+    boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
+    outline: 'none'
   };
 
+  if (isVerified) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <AnimatePresence>
+          <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.5, opacity: 0 }}>
+            <CheckCircleIcon style={{ fontSize: 80, color: 'green' }} />
+          </motion.div>
+        </AnimatePresence>
+      </Box>
+    );
+  }
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div className='inputOtp' style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', backgroundColor: '#f8f8f8', borderRadius: '10px' }}>
+        <div className='inputOtp' style={{ display: 'flex', marginBottom: '20px' }}>
           {['digit1', 'digit2', 'digit3', 'digit4'].map((digit, index) => (
             <input
               key={digit}
@@ -66,18 +93,35 @@ function Otp() {
             />
           ))}
         </div>
-        {isTimerActive ? (
-            <Button variant='outlined' size='small'
-            style={{alignSelf:'flex-end', marginTop:'10px',marginBottom:'20px'}}
-            >Resend OTP</Button>
-        ) : (
-          <>
-            <Button disabled variant='outlined'
-            style={{alignSelf:'flex-end', marginTop:'10px',marginBottom:'20px'}}
-            size='small'>Resend OTP {counter} Seconds</Button>
-          </>
-        )}
-        <Button variant='contained' style={{alignSelf:'flex-end', marginTop:'20px'}} onClick={() => console.log('Verify OTP')}>Verify</Button>
+        <Box display="flex" alignItems="center" marginBottom="20px">
+            {isTimerActive ? (
+                <Button variant='outlined' size='small'
+                style={{ borderRadius: '20px', marginRight: '10px' }}
+                >Resend OTP</Button>
+            ) : (
+                <>
+                <Button disabled variant='outlined'
+                    style={{ borderRadius: '20px', marginRight: '10px' }}
+                    size='small'>Resend OTP</Button>
+                <Box position="relative" display="inline-flex">
+                    <CircularProgress variant="determinate" value={(counter/40)*100} size={40} thickness={5} />
+                    <Box
+                        top={0}
+                        left={0}
+                        bottom={0}
+                        right={0}
+                        position="absolute"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        <span>{counter}</span>
+                    </Box>
+                </Box>
+                </>
+            )}
+        </Box>
+        <Button variant='contained' style={{alignSelf:'center', padding: '10px 20px', backgroundColor: '#007BFF', color: 'white', borderRadius: '20px'}} onClick={() => console.log('Verify OTP')}>Verify</Button>
     </div>
   );
 }
