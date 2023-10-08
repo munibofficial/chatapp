@@ -104,7 +104,7 @@ function Otp() {
                     style={{ borderRadius: '20px', marginRight: '10px' }}
                     size='small'>Resend OTP</Button>
                 <Box position="relative" display="inline-flex">
-                    <CircularProgress variant="determinate" value={(counter/40)*100} size={40} thickness={5} style={{color:'black'}}/>
+                    <CircularProgress variant="determinate" value={(counter/40)*100} size={40} thickness={5} />
                     <Box
                         top={0}
                         left={0}
@@ -115,7 +115,7 @@ function Otp() {
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <span>{counter}</span>
+                <span style={{ color: 'black' }}>{counter}</span> {/* Color of the counter set to black */}
                     </Box>
                 </Box>
                 </>
