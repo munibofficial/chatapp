@@ -1,10 +1,14 @@
 import React, { useState, useRef } from 'react';
-import { Box, TextField, Button, Avatar, IconButton } from '@mui/material';
+import { Box, TextField, Button, Avatar, IconButton, InputAdornment } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-export default function ProfileSetup() {
+export default function ProfileSetup(props) {
     const [profilePic, setProfilePic] = useState(null);
     const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);  // State to manage password visibility
     const fileInputRef = useRef(null);
 
     const handleImageChange = (e) => {
@@ -22,14 +26,19 @@ export default function ProfileSetup() {
         fileInputRef.current.click();
     };
 
+    const handleTogglePasswordVisibility = () => {  // Toggle password visibility
+        setShowPassword(!showPassword);
+    };
+
     const handleSubmit = () => {
         console.log('Profile Picture:', profilePic);
         console.log('Username:', username);
-        // You can send this data to your backend or another service.
+        console.log('Password:', password);   // In a real-world scenario, avoid logging sensitive info!
     };
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            
             <Box sx={{ position: 'relative', width: 120, height: 120 }}>
                 <Avatar 
                     alt="User's profile picture" 
@@ -55,15 +64,40 @@ export default function ProfileSetup() {
                     onChange={handleImageChange} 
                 />
             </Box>
-            
+
             <TextField
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 label="Choose a username"
                 variant="standard"
-                sx={{ marginTop: 2 }}
+                sx={{ marginTop: 2, height: '56px' }}  // Explicitly set the height
             />
-            <Button onClick={handleSubmit} sx={{ marginTop: 2 ,borderRadius: 10 }}>Save</Button>
-        </Box>
+
+<TextField
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                label="Password"
+                variant="standard"
+                sx={{ marginTop: 2, height: '56px' }}  // Explicitly set the height
+                InputProps={{  // Adornment for password visibility toggle
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <IconButton
+                                edge="end"
+                                onClick={handleTogglePasswordVisibility}
+                            >
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                    ),
+                }}
+            />
+
+
+<Button onClick={() => {
+        handleSubmit();
+        props.onComplete && props.onComplete();
+    }} sx={{ marginTop: 2, borderRadius: 10 }}>Save</Button>      </Box>
     );
 }

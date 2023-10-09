@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 import Otp from './Otp';
 
-export default function Registration() {
+export default function Registration(props) {
     const [isOtpSent, setIsOtpSent] = useState(false);
     const [buttonText, setButtonText] = useState("Send Verification →");
 
@@ -19,7 +19,7 @@ export default function Registration() {
     }
 
     if (isOtpSent) {
-        return <Otp />;
+        return <Otp onComplete={props.onComplete} />;  // Pass down the onComplete prop to the Otp component
     }
 
     return (
@@ -38,7 +38,7 @@ export default function Registration() {
             noValidate
             autoComplete="off"
         >
-            <TextField 
+            {/* <TextField 
                 id="username" 
                 size="small" 
                 label="Username" 
@@ -48,7 +48,7 @@ export default function Registration() {
                     backgroundColor: 'background.paper',
                     borderRadius: '5px'
                 }}
-            />
+            /> */}
             <TextField 
                 id="filled-number" 
                 size="small" 
