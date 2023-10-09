@@ -4,78 +4,83 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { motion, AnimatePresence } from 'framer-motion';
+import ProfileSetup from './ProfileSetup';
 
 function Otp() {
-  const [otp, setOtp] = useState({ digit1: '', digit2: '', digit3: '', digit4: '' });
-  const [isTimerActive, setIsTimerActive] = useState(false);
-  const [counter, setCounter] = useState(40);
-  const [isVerified, setIsVerified] = useState(false);
+    const [otp, setOtp] = useState({ digit1: '', digit2: '', digit3: '', digit4: '' });
+    const [isTimerActive, setIsTimerActive] = useState(false);
+    const [counter, setCounter] = useState(40);
+    const [isVerified, setIsVerified] = useState(false);
+    const [profileSetupDone, setProfileSetupDone] = useState(false);
 
-  const refs = {
-    digit1: useRef(null),
-    digit2: useRef(null),
-    digit3: useRef(null),
-    digit4: useRef(null)
-  };
+    const refs = {
+        digit1: useRef(null),
+        digit2: useRef(null),
+        digit3: useRef(null),
+        digit4: useRef(null)
+    };
 
-  useEffect(() => {
-    let timer;
-    if (counter > 0) {
-      timer = setInterval(() => {
-        setCounter(prevCounter => prevCounter - 1);
-      }, 1000);
-    } else {
-      setIsTimerActive(true);
-      clearInterval(timer);
-    }
-
-    return () => clearInterval(timer);
-  }, [counter]);
-
-  useEffect(() => {
-    if (Object.values(otp).join("").length === 4) {
-      // Here, you would typically make an API call to verify the OTP.
-      // For the sake of this example, we'll simulate a successful verification.
-      setIsVerified(true);
-    }
-  }, [otp]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (value.length <= 1 && /^[0-9]*$/.test(value)) {
-      setOtp(prevState => ({ ...prevState, [name]: value }));
-      if (value.length === 1) {
-        const nextDigit = `digit${parseInt(name.charAt(5)) + 1}`;
-        if (refs[nextDigit]) {
-          refs[nextDigit].current.focus();
+    useEffect(() => {
+        let timer;
+        if (counter > 0) {
+            timer = setInterval(() => {
+                setCounter(prevCounter => prevCounter - 1);
+            }, 1000);
+        } else {
+            setIsTimerActive(true);
+            clearInterval(timer);
         }
-      }
+
+        return () => clearInterval(timer);
+    }, [counter]);
+
+    useEffect(() => {
+        if (Object.values(otp).join("").length === 4) {
+            setIsVerified(true);
+        }
+    }, [otp]);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        if (value.length <= 1 && /^[0-9]*$/.test(value)) {
+            setOtp(prevState => ({ ...prevState, [name]: value }));
+            if (value.length === 1) {
+                const nextDigit = `digit${parseInt(name.charAt(5)) + 1}`;
+                if (refs[nextDigit]) {
+                    refs[nextDigit].current.focus();
+                }
+            }
+        }
+    };
+
+    const inputStyle = {
+        width: '40px',
+        height: '40px',
+        marginRight: '10px',
+        textAlign: 'center',
+        borderRadius: '5px',
+        border: '2px solid #ddd',
+        fontSize: '18px',
+        boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
+        outline: 'none'
+    };
+
+    if (isVerified && !profileSetupDone) {
+        return <ProfileSetup />;
     }
-  };
 
-  const inputStyle = {
-    width: '40px',
-    height: '40px',
-    marginRight: '10px',
-    textAlign: 'center',
-    borderRadius: '5px',
-    border: '2px solid #ddd',
-    fontSize: '18px',
-    boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
-    outline: 'none'
-  };
+    if (isVerified && profileSetupDone) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                <AnimatePresence>
+                    <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.5, opacity: 0 }}>
+                        <CheckCircleIcon style={{ fontSize: 80, color: 'green' }} />
+                    </motion.div>
+                </AnimatePresence>
+            </Box>
+        );
+    }
 
-  if (isVerified) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-        <AnimatePresence>
-          <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.5, opacity: 0 }}>
-            <CheckCircleIcon style={{ fontSize: 80, color: 'green' }} />
-          </motion.div>
-        </AnimatePresence>
-      </Box>
-    );
-  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', backgroundColor: '#f8f8f8', borderRadius: '10px' }}>
@@ -123,7 +128,7 @@ function Otp() {
         </Box>
         <Button variant='contained' style={{alignSelf:'center', padding: '10px 20px', backgroundColor: '#007BFF', color: 'white', borderRadius: '20px'}} onClick={() => console.log('Verify OTP')}>Verify</Button>
     </div>
-  );
-}
-
-export default Otp;
+   );
+  }
+  
+  export default Otp;
