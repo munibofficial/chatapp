@@ -63,7 +63,7 @@ export default function ProfileSetup() {
                 variant="standard"
                 sx={{ marginTop: 2 }}
             />
-            <Button onClick={handleSubmit} sx={{ marginTop: 2 }}>Save</Button>
+            <Button onClick={handleSubmit} sx={{ marginTop: 2 ,borderRadius: 10 }}>Save</Button>
         </Box>
     );
 }
